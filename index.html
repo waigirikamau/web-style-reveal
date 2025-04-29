@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
   </head>
 
   <body>
@@ -60,7 +60,7 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
       <div class="container hero-container">
-        <div class="hero-content">
+        <div class="hero-content animated fade-in slide-left">
           <p class="mb-2">Hi, I'm John Watson</p>
           <h1 class="hero-title">
             <span>Web</span> Developer
@@ -70,11 +70,11 @@
             Designer for 10+ years & I gained experience with large worldwide clients.
           </p>
           <div class="hero-buttons">
-            <a href="#" class="btn-hire">Hire Me</a>
-            <a href="#portfolio" class="btn-outline">My Portfolio</a>
+            <a href="#" class="btn-hire animated-btn">Hire Me</a>
+            <a href="#portfolio" class="btn-outline animated-btn">My Portfolio</a>
           </div>
         </div>
-        <div class="hero-image-container">
+        <div class="hero-image-container animated fade-in slide-right">
           <img src="/lovable-uploads/ad4febfa-dc0c-4747-b010-fa439f33f345.png" alt="John Watson" class="hero-image">
         </div>
       </div>
@@ -309,22 +309,26 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat-item">
-            <h3 class="stat-number">135</h3>
+            <div class="stat-icon">📊</div>
+            <h3 class="stat-number" data-count="135">0</h3>
             <p class="stat-label">Projects Completed</p>
           </div>
           
           <div class="stat-item">
-            <h3 class="stat-number">225</h3>
+            <div class="stat-icon">🤝</div>
+            <h3 class="stat-number" data-count="225">0</h3>
             <p class="stat-label">Satisfied Clients</p>
           </div>
           
           <div class="stat-item">
-            <h3 class="stat-number">115</h3>
+            <div class="stat-icon">🏆</div>
+            <h3 class="stat-number" data-count="115">0</h3>
             <p class="stat-label">Awards Won</p>
           </div>
           
           <div class="stat-item">
-            <h3 class="stat-number">272</h3>
+            <div class="stat-icon">☕</div>
+            <h3 class="stat-number" data-count="272">0</h3>
             <p class="stat-label">Cups of Coffee</p>
           </div>
         </div>
@@ -525,6 +529,46 @@
             }
           }
         });
+      });
+
+      // Stats counter animation
+      document.addEventListener('DOMContentLoaded', function() {
+        const statsSection = document.getElementById('stats');
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let animated = false;
+        
+        function animateStats() {
+          statNumbers.forEach(statNumber => {
+            const target = parseInt(statNumber.getAttribute('data-count'));
+            const current = parseInt(statNumber.textContent);
+            
+            if (current < target) {
+              const increment = Math.max(1, Math.floor(target / 50));
+              const newValue = Math.min(current + increment, target);
+              statNumber.textContent = newValue;
+              
+              if (newValue < target) {
+                setTimeout(() => animateStats(), 30);
+              }
+            }
+          });
+        }
+        
+        function checkIfInView() {
+          const rect = statsSection.getBoundingClientRect();
+          const isInView = (
+            rect.top <= window.innerHeight * 0.75 &&
+            rect.bottom >= 0
+          );
+          
+          if (isInView && !animated) {
+            animated = true;
+            animateStats();
+          }
+        }
+        
+        window.addEventListener('scroll', checkIfInView);
+        checkIfInView(); // Check on load
       });
     </script>
   </body>
